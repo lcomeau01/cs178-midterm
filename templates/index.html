@@ -16,20 +16,20 @@
 
     <!-- drop down menus -->
     <div class="top-interactions">
-        <label for="grouper"> X: </label>
-        <select name="grouper" onchange="update_dropdown(this.value, 'xOption')">
+        <label for="xaxis-data"> X: </label>
+        <select name="xaxis-data" onchange="update_dropdown(this.value, 'xOption')">
             {% for option in xOptions %}
                 <option value="{{option}}">{{ option }}</option>
             {% endfor %}
         </select>
-        <label for="value"> Y: </label>
-        <select name="value" onchange="update_dropdown(this.value, 'yOption')">
+        <label for="yaxis-data"> Y: </label>
+        <select name="yaxis-data" onchange="update_dropdown(this.value, 'yOption')">
             {% for option in yOptions %}
                 <option value="{{option}}">{{ option }}</option>
             {% endfor %}
         </select>
-        <label for="agg"> Facet: </label>
-        <select name="agg" onchange="update_dropdown(this.value, 'facetOption')">
+        <label for="twocharts-diff"> Facet: </label>
+        <select name="twocharts-diff" onchange="update_dropdown(this.value, 'facetOption')">
             {% for option in facetOptions %}
                 <option value="{{option}}">{{ option }}</option>
             {% endfor %}

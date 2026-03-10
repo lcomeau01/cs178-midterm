@@ -38,6 +38,32 @@ def index():
         filter_ranges=filter_ranges
     )
 
+@app.route("/update_scatter", methods=["POST"])
+def update_scatter(): 
+    request_data = request.get_json()
+
+    x = request_data["xOption"]
+    y = request_data["yOption"]
+    facet = request_data["facetOption"]
+
+    scatter_query = f"""
+    SELECT "{x}" AS X,
+           "{y}" AS Y,
+           "{facet}" AS facet
+    FROM placementdata.csv
+    """
+    
+    scatter_results = duckdb.sql(scatter_query).df()
+    scatter_data = [{'x': float(row['X']), 'y': float(row['Y']), 'facet': float(row['facet'])} for _, row in scatter_results.iterrows()]
+
+    return {
+        "data": scatter_data, 
+        "x_column": x,
+        "y_column": y,
+        "facet_column": facet, 
+        'max_count': 100
+    }
+
 if __name__ == '__main__':
     # Run the application if the script is executed directly
     app.run(debug=True)
