@@ -21,18 +21,7 @@ input {
 	text-align:center;
 	padding-left: 20px;
 }
-.sliderHumidity
-{
-  text-align:center;
-}
-.tooltip {
-  position: absolute;
-  font-size: 12px;
-  width:  auto;
-  height: auto;
-  pointer-events: none;
-  background-color: white;
-}
+
 .axis {
   font: 10px sans-serif;
 }
