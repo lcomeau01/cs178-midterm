@@ -19,19 +19,20 @@
         <label for="xaxis-data"> X: </label>
         <select name="xaxis-data" onchange="update_dropdown(this.value, 'xOption')">
             {% for option in xOptions %}
-                <option value="{{option}}">{{ option }}</option>
+            
+                <option id="x-dropdown" value="{{option}}">{{ option }}</option>
             {% endfor %}
         </select>
         <label for="yaxis-data"> Y: </label>
         <select name="yaxis-data" onchange="update_dropdown(this.value, 'yOption')">
             {% for option in yOptions %}
-                <option value="{{option}}">{{ option }}</option>
+                <option id="y-dropdown" value="{{option}}">{{ option }}</option>
             {% endfor %}
         </select>
         <label for="twocharts-diff"> Facet: </label>
         <select name="twocharts-diff" onchange="update_dropdown(this.value, 'facetOption')">
             {% for option in facetOptions %}
-                <option value="{{option}}">{{ option }}</option>
+                <option id="facet-dropdown" value="{{option}}" >{{ option }}</option>
             {% endfor %}
         </select>
     </div>
@@ -53,9 +54,10 @@
     </div>
 
     <script>
+
       margin = {top: 45, right: 30, bottom: 30, left: 45},
       width = 460 - margin.left - margin.right,
-      height = 360 - margin.top - margin.bottom;
+      height = 600 - margin.top - margin.bottom;
 
       scatter1_svg = draw_svg('scatter1', margin, width, height); 
       scatter2_svg = draw_svg('scatter2', margin, width, height); 
@@ -63,6 +65,16 @@
       {% for column, (min,max) in filter_ranges.items() %}
         draw_slider('{{column}}', {{min}}, {{max}})
       {% endfor %}
+
+      scatter1_scale = draw_axes("scatter1", scatter1_svg, width, height, [0,0], [0,0])
+      scatter2_scale = draw_axes("scatter2", scatter2_svg, width, height, [0,10], [0,0])
+
+      update_plots(
+          currentState.xOption,
+          currentState.yOption,
+          currentState.facetOption
+      )
+
     </script>
   </div>
 </body>

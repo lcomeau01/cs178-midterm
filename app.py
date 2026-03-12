@@ -1,6 +1,7 @@
 # app.py
 from flask import Flask, render_template, request
 import duckdb
+import json  
 
 app = Flask(__name__)
 
@@ -46,22 +47,29 @@ def update_scatter():
     y = request_data["yOption"]
     facet = request_data["facetOption"]
 
+    params =  request_data["params"]
+    predicates = []
+    for col, val in params.items():
+            predicates.append(f'"{col}" >= {val[0]} AND "{col}" <= {val[1]}')
+
+    where_clause = " AND ".join(predicates) if predicates else "1=1"
+
     scatter_query = f"""
     SELECT "{x}" AS X,
            "{y}" AS Y,
            "{facet}" AS facet
     FROM placementdata.csv
+    WHERE {where_clause}
     """
     
     scatter_results = duckdb.sql(scatter_query).df()
-    scatter_data = [{'x': float(row['X']), 'y': float(row['Y']), 'facet': float(row['facet'])} for _, row in scatter_results.iterrows()]
+    scatter_data = [{'x': float(row['X']), 'y': float(row['Y']), 'facet': row['facet']} for _, row in scatter_results.iterrows()]
 
     return {
         "data": scatter_data, 
         "x_column": x,
         "y_column": y,
         "facet_column": facet, 
-        'max_count': 100
     }
 
 if __name__ == '__main__':
