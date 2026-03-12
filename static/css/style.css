@@ -31,3 +31,58 @@ input {
   stroke: #000;
   shape-rendering: crispEdges;
 }
+
+.screen-container
+{ 
+    display: flex; 
+    flex-direction: column;
+
+    justify-content: baseline;
+    align-items: flex-start;
+
+    padding: 25px; 
+    gap: 25px; 
+}
+
+.top-interactions 
+{ 
+    display: flex; 
+    gap: 20px; 
+}
+
+.drop-down
+{ 
+    font-size: 18px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+}
+
+.container-bottom
+{ 
+    display: flex; 
+    
+    justify-content: space-evenly;
+    align-items: center;
+
+    gap: 50px; 
+}
+
+.graphs 
+{ 
+    display: flex; 
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px; 
+}
+
+.scatter
+{ 
+    border: 3px solid black; 
+}
+
+.title 
+{ 
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 15px;
+}

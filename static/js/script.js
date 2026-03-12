@@ -45,7 +45,7 @@ function draw_svg(container_id, margin, width, height){
     .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
-    .style("background-color", "#dbdad7")
+    .style("background-color", "#EBEBEB")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     return svg
@@ -82,8 +82,38 @@ function draw_yaxis(plot_name, svg, scale){
         .call(d3.axisLeft(scale));
 }
 
+function draw_xTitle(svg, width, height)
+{ 
+     return svg.append("text")
+       .attr("class", "title")
+       .attr("text-anchor", "end")
+       .attr("x", width - margin.right)
+       .attr("y", height + 43); 
+}
+
+function draw_yTitle(svg, width, height)
+{ 
+    return svg.append("text")
+        .attr("class", "title")
+        .attr("text-anchor", "middle")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -height/2)
+        .attr("y", -40);
+}
+
+function draw_chartTitle(svg, width, height)
+{ 
+    return svg.append("text")
+        .attr("class", "title")
+        .attr("text-anchor", "middle")
+        .style("font-size", "16px")
+        .style("text-decoration", "underline")
+        .attr("x", width/2)
+        .attr("y", -10); 
+}
+
 function draw_scatter(data, svg, scale){
-    svg.selectAll("circle")
+     svg.selectAll("circle")
         .data(data)
         .enter()
         .append("circle")
@@ -91,7 +121,7 @@ function draw_scatter(data, svg, scale){
         .attr("cx", d => scale.x(d.x + (Math.random() - 0.5) * 0.1))
         .attr("r", 4)
         .attr("opacity", 0.8)
-        .attr("fill", "#B22122"); 
+        .attr("fill", "#1D78B4"); 
 }
 
 function update_dropdown(value, type){
@@ -136,6 +166,14 @@ function update_plots(xOption, yOption, facetOption){
 
         const plot1 = data.filter(d => d.facet === facetValues[0])
         const plot2 = data.filter(d => d.facet === facetValues[1])
+        
+        // update titles 
+        xTitle1.text(result.x_column)
+        xTitle2.text(result.x_column)
+        yTitle1.text(result.y_column)
+        yTitle2.text(result.y_column)
+        title1.text(facetOption + ": " + facetValues[0])
+        title2.text(facetOption + ": " + facetValues[1])
 
         // compute new domains
         const xDomain = d3.extent(data, d => d.x); 
@@ -144,10 +182,10 @@ function update_plots(xOption, yOption, facetOption){
         // update scales
         scatter1_scale.x.domain([Math.max(0, xDomain[0] - 0.5), xDomain[1] + 0.5]).nice(); 
         scatter1_scale.y.domain([Math.max(0, yDomain[0] - 0.5), yDomain[1] + 0.5]).nice(); 
+        scatter2_scale.x.domain([Math.max(0, xDomain[0] - 0.5), xDomain[1] + 0.5]).nice(); 
+        scatter2_scale.y.domain([Math.max(0, yDomain[0] - 0.5), yDomain[1] + 0.5]).nice(); 
 
-        scatter2_scale.x.domain(xDomain).nice(); 
-        scatter2_scale.y.domain(yDomain).nice(); 
-
+        // update ticks 
         const xTicks1 = scatter1_scale.x.ticks().filter(Number.isInteger); 
         const yTicks1 = scatter1_scale.y.ticks().filter(Number.isInteger);
         const xTicks2 = scatter2_scale.x.ticks().filter(Number.isInteger); 
@@ -155,11 +193,8 @@ function update_plots(xOption, yOption, facetOption){
 
         // update axes
         scatter1_svg.select(".scatter1-xaxis").call(d3.axisBottom(scatter1_scale.x).tickValues(xTicks1));
-
         scatter1_svg.select(".scatter1-yaxis").call(d3.axisLeft(scatter1_scale.y).tickValues(yTicks1));
-
         scatter2_svg.select(".scatter2-xaxis").call(d3.axisBottom(scatter2_scale.x).tickValues(xTicks2));
-
         scatter2_svg.select(".scatter2-yaxis").call(d3.axisLeft(scatter2_scale.y).tickValues(yTicks2));
 
         // redraw points
